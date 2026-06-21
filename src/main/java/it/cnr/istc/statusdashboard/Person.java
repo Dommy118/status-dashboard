@@ -1,12 +1,12 @@
 package it.cnr.istc.statusdashboard;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,9 +20,18 @@ public class Person {
     private String name;
     private int age;
 
-    // Custom constructor to easily insert sample data
+    // One Person has Many Cars. CascadeType.ALL means if you save/delete the Person, it saves/deletes their cars too!
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Car> cars = new ArrayList<>();
+
     public Person(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    // Helper method to safely assign a car to this person
+    public void addCar(Car car) {
+        cars.add(car);
+        car.setPerson(this);
     }
 }
