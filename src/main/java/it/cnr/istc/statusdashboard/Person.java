@@ -20,9 +20,13 @@ public class Person {
     private String name;
     private int age;
 
-    // One Person has Many Cars. CascadeType.ALL means if you save/delete the Person, it saves/deletes their cars too!
+    // One person can own multiple cars
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Car> cars = new ArrayList<>();
+
+    // One person can have multiple tasks
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>();
 
     public Person(String name, int age) {
         this.name = name;
@@ -33,5 +37,11 @@ public class Person {
     public void addCar(Car car) {
         cars.add(car);
         car.setPerson(this);
+    }
+
+    // Helper method to safely assign a task to this person
+    public void addTask(Task task) {
+        tasks.add(task);
+        task.setPerson(this);
     }
 }

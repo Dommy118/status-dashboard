@@ -10,24 +10,26 @@ import lombok.NoArgsConstructor;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Car {
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String brand;
-    private String model;
+    private String title;
+    private String description;
+    private String status;
 
-    // Many cars can belong to one person
+    // Many tasks can belong to one person
     @ManyToOne
     @JoinColumn(name = "person_id")
     @JsonIgnore // Prevents infinite JSON loop in browser
     private Person person;
 
-    public Car(String brand, String model, Person person) {
-        this.brand = brand;
-        this.model = model;
+    public Task(String title, String description, String status, Person person) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
         this.person = person;
     }
 }
